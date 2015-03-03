@@ -1,54 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	                    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-
-	<context:component-scan base-package="com.multicampus.biz" />
 	
+	<context:component-scan base-package="com.multicampus.biz"/>
+
 	<aop:aspectj-autoproxy/>
+	
+	<!-- Spring JDBC 설정 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="dataSource" 
+	      class="org.apache.commons.dbcp.BasicDataSource"
+	      destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="hr"/>
+		<property name="password" value="hr"/>
+	</bean>
 
-	<!-- Advice(횡단관점) 클래스 등록 -->
-	<!-- 
-	<bean id="log" class="com.multicampus.biz.common.LogAdvice" />
-	 -->
-
+	<!-- Advice(횡단관점) 클래스 등록 
+	<bean id="log" class="com.multicampus.biz.common.LogAdvice"/>
+	-->
+	
 	<!-- AOP 설정 
 	<aop:config>
-		<aop:pointcut id="allPointcut"
-			expression="execution(* com.multicampus.biz..*Impl.*(..))" />
-			
-		<aop:pointcut id="getPointcut"
-			expression="execution(* com.multicampus.biz..*Impl.get*(..))" />
-
+		<aop:pointcut id="allPointcut" 
+		              expression="execution(* com.multicampus.biz..*Impl.*(..))"/>
+		<aop:pointcut id="getPointcut" 
+		              expression="execution(* com.multicampus.biz..*Impl.get*(..))"/>
+		
 		<aop:aspect ref="log">
-			<aop:before pointcut-ref="allPointcut" method="printLog" />
+			<aop:before pointcut-ref="allPointcut" 
+			            method="printLog"/>
 		</aop:aspect>
 		
 		<aop:aspect ref="afterReturning">
-			<aop:after-returning pointcut-ref="getPointcut" method="afterLog" returning="returnObj" />
+			<aop:after-returning pointcut-ref="getPointcut" 
+			            method="afterLog"
+			            returning="returnObj"/>
 		</aop:aspect>
 		
 		<aop:aspect ref="afterThrowing">
-			<aop:after-throwing pointcut-ref="allPointcut" method="exceptionLog" throwing="exceptObj" />
+			<aop:after-throwing pointcut-ref="allPointcut" 
+			            method="exceptionLog"
+			            throwing="exceptObj"/>
 		</aop:aspect>
 		
 		<aop:aspect ref="around">
-			<aop:around pointcut-ref="allPointcut" method="aroundLog" />
+			<aop:around pointcut-ref="allPointcut" 
+			            method="aroundLog"/>
 		</aop:aspect>
-		
 	</aop:config>
 -->
+<!--  
+	<bean id="userService" class="com.multicampus.biz.user.impl.UserServiceImpl">
+		<property name="userDAO" ref="userDAO"/>
+	</bean>
 
-	<!-- <bean id="userService" class="com.multicampus.biz.user.impl.UserServiceImpl"> 
-		<property name="userDAO" ref="userDAO"/> </bean> <bean id="userDAO" class="com.multicampus.biz.user.impl.UserDAO"/> 
-		<bean id="boardService" class="com.multicampus.biz.board.impl.BoardServiceImpl"> 
-		<property name="boardDAO" ref="boardDAO"/> </bean> <bean id="boardDAO" class="com.multicampus.biz.board.impl.BoardDAO"/> 
-		<context:component-scan base-package="polymorphism3"/> <bean id="tv" class="polymorphism3.LgTV"> 
-		<property name="speaker" ref="sony"/> </bean> <bean id="sony" class="polymorphism3.SonySpeaker"/> 
-		<bean id="apple" class="polymorphism3.AppleSpeaker"/> -->
+	<bean id="userDAO" class="com.multicampus.biz.user.impl.UserDAO"/>
+	
+	
+	<bean id="boardService" class="com.multicampus.biz.board.impl.BoardServiceImpl">
+		<property name="boardDAO" ref="boardDAO"/>
+	</bean>
+
+	<bean id="boardDAO" class="com.multicampus.biz.board.impl.BoardDAO"/>
+
+	<context:component-scan base-package="polymorphism3"/>
+	
+	<bean id="tv" class="polymorphism3.LgTV">
+		<property name="speaker" ref="sony"/>
+	</bean>
+		
+	<bean id="sony" class="polymorphism3.SonySpeaker"/>
+	
+	<bean id="apple" class="polymorphism3.AppleSpeaker"/>
+-->
 </beans>
 
 

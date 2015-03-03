@@ -11,7 +11,8 @@ import com.multicampus.biz.board.BoardVO;
 @Component("boardService")
 public class BoardServiceImpl implements BoardService {
 	@Autowired
-	private BoardDAO boardDAO;	
+//	private BoardDAO boardDAO;
+	private BoardDAOSpring boardDAO;
 
 //	public void setBoardDAO(BoardDAO boardDAO) {
 //		this.boardDAO = boardDAO;
