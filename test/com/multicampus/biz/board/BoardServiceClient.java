@@ -20,10 +20,11 @@ public class BoardServiceClient {
 		
 		// 3. 글 등록 기능 테스트
 		BoardVO vo = new BoardVO();
+		vo.setSeq(100);
 		vo.setTitle("JDBC 제목....");
 		vo.setWriter("홍길동");
 		vo.setContent("JDBC 내용...............");
-		boardService.insertBoard(vo);
+//		boardService.insertBoard(vo);
 		
 		// 4. 글 목록 검색 테스트
 		List<BoardVO> boardList = boardService.getBoardList(vo);
